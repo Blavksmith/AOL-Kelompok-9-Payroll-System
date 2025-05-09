@@ -3,13 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package payrollsystem;
-
-/**
- *
- * @author Eugene Vereshchagin (g7skim)
- */
-
+package Problem;
+	
+	
 public abstract class Employee {
     // Variables
     private int empId;
