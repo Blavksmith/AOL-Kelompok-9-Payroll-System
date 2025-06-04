@@ -6,9 +6,9 @@
 package Problem;
 
 /**
-// Code Smell 3: Deficient Encapsulation
-// Reason: Class FullTime sudah memiliki constructor, tapi memiliki setter
-// Solution: Remove Setter
+// Smell Code 5 : Long Parameter List (FullTime.java)
+// Reason	: Konstruktor `FullTime(int, String, double, double, Vehicle)` terlalu banyak   parameter primitif.
+// Solution	: Gunakan objek atau Builder pattern untuk menghindari long parameter list.
  */
 
 public class FullTime extends Employee {

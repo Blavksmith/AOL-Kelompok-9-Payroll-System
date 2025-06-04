@@ -6,8 +6,9 @@
 package Problem;
 
 /**
- *
- * @author Eugene Vereshchagin (g7skim)
+// Smell Code 5 : Long Parameter List (PartTime.java)
+// Reason	: Konstruktor `FullTime(int, String, double, double, Vehicle)` terlalu banyak   parameter primitif.
+// Solution	: Gunakan objek atau Builder pattern untuk menghindari long parameter list.
  */
 public class PartTime extends Employee {
     private double rate;

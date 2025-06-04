@@ -7,7 +7,8 @@ public class PayrollSystem {
 
     public static void main(String[] args) {
         ArrayList<Employee> arrEmp = new ArrayList<Employee>();
-        byte menuOption = 0;
+        byte menuOption;
+
         do {
             menuOption = showMenu();
             switch (menuOption) {
@@ -28,88 +29,98 @@ public class PayrollSystem {
         } while (menuOption != 4);
     }
 
-    public static FullTime readNewFullTime() {
-        int id = 0;
-        String name = null;
-        double sal = 0.0;
-        double hourAndHalf = 0.0;
-        Scanner kbd = new Scanner(System.in);
-        System.out.print("Enter Id: "); id = kbd.nextInt();
-        System.out.print("\nEnter Name: "); name = kbd.next();
-        System.out.print("\nEnter Salary: "); sal = kbd.nextDouble();
-        System.out.print("\nEnter Bonus: "); hourAndHalf = kbd.nextDouble();
-        
-        FullTime ft1 = new FullTime(id, name, sal, hourAndHalf, getVehicle());
-        return ft1;
-    }
-
-    public static PartTime readNewPartTime() {
-        int id = 0;
-        String name = null;
-        Scanner kbd = new Scanner(System.in);
-        System.out.print("Enter Id: "); id = kbd.nextInt();
-        System.out.print("\nEnter Name: "); name = kbd.next();
-        System.out.print("\nEnter Hourly Rate: "); double rate = kbd.nextDouble();
-        System.out.print("\nEnter Number of Hours Worked: "); double hoursWorked = kbd.nextDouble();
-        
-        Vehicle v1 = getVehicle();
-        PartTime pt1 = new PartTime(id, name, rate, hoursWorked, v1);
-        return pt1;
-    }
-
     public static byte showMenu() {
-        byte menuOption = 0;
         Scanner kbd = new Scanner(System.in);
-        System.out.println(""
-            + "/* *************************************************/"
-            + "\n/* 1. Add FullTime                               */"
-            + "\n/* 2. Add PartTime                               */"
-            + "\n/* 3. Calculate Payroll                          */" 
-            + "\n/* 4. Exit                                       */"   
-            + "\n/* *************************************************/");
-        System.out.print("Input: "); menuOption = kbd.nextByte();
-        return menuOption;
-    }
-
-    public static Vehicle getVehicle() {
-        Scanner kbd = new Scanner(System.in);
-        String hasVehicle = "N";
-        System.out.println("\nDoes this employee have a vehicle? Y/N : ");
-        hasVehicle = kbd.next();
-        if (hasVehicle.equalsIgnoreCase("Y")) {
-            System.out.println("\nEnter plate number: "); String auxPlate = kbd.next();
-            System.out.println("\nEnter vehicle colour: "); String auxColour = kbd.next();
-            return new Vehicle(auxPlate, auxColour);
-        } else {
-            return null;
-        }
+        System.out.println("""
+                /* *************************************************/
+                /* 1. Add FullTime                                */
+                /* 2. Add PartTime                                */
+                /* 3. Calculate Payroll                           */
+                /* 4. Exit                                        */
+                /* *************************************************/""");
+        System.out.print("Input: ");
+        return kbd.nextByte();
     }
 
     public static void addEmployee(ArrayList<Employee> pArrEmp, Employee pEmp) {
         pArrEmp.add(pEmp);
     }
 
-    public static void calcPayroll(ArrayList<Employee> pArrEmp) {
-        double totalCompanyPay = 0.0;
-        System.out.print("\n**********************\n");
-        for (Employee employee : pArrEmp) {
-            double individualPay = calculateIndividualPay(employee);
-            printEmployeeDetails(employee, individualPay);
-            totalCompanyPay += individualPay;
+    public static FullTime readNewFullTime() {
+        EmployeeInfo empInfo = readEmployeeInfo();
+        double sal = readDouble("Enter Salary: ");
+        double bonus = readDouble("Enter Bonus: ");
+        return new FullTime(empInfo, sal, bonus);
+    }
+
+    public static PartTime readNewPartTime() {
+        EmployeeInfo empInfo = readEmployeeInfo();
+        double rate = readDouble("Enter Hourly Rate: ");
+        double hoursWorked = readDouble("Enter Number of Hours Worked: ");
+        return new PartTime(empInfo, rate, hoursWorked);
+    }
+    
+    public static EmployeeInfo readEmployeeInfo() {
+        int id = readInt("Enter Id: ");
+        String name = readString("Enter Name: ");
+        Vehicle vehicle = getVehicle();
+        return new EmployeeInfo(id, name, vehicle);
+    }
+
+    private static int readInt(String prompt) {
+        System.out.print(prompt);
+        return new Scanner(System.in).nextInt();
+    }
+
+    private static double readDouble(String prompt) {
+        System.out.print(prompt);
+        return new Scanner(System.in).nextDouble();
+    }
+
+    private static String readString(String prompt) {
+        System.out.print(prompt);
+        return new Scanner(System.in).next();
+    }
+
+    public static Vehicle getVehicle() {
+        Scanner kbd = new Scanner(System.in);
+        System.out.print("\nDoes this employee have a vehicle? Y/N: ");
+        String hasVehicle = kbd.next();
+
+        if (hasVehicle.equalsIgnoreCase("Y")) {
+            System.out.print("Enter plate number: ");
+            String plate = kbd.next();
+            System.out.print("Enter vehicle colour: ");
+            String colour = kbd.next();
+            return new Vehicle(plate, colour);
+        } else {
+            return null;
         }
+    }
+
+    // 💡 Refactored Long Method: calcPayroll
+    public static void calcPayroll(ArrayList<Employee> employees) {
+        double totalCompanyPay = 0.0;
+
+        for (Employee emp : employees) {
+            System.out.println("\n**********************");
+            double pay = calculateIndividualPay(emp);
+            printEmployeeDetails(emp, pay);
+            printVehicleInfo(emp.getVehicle());
+            totalCompanyPay += pay;
+        }
+
         printTotalPayroll(totalCompanyPay);
     }
 
-    private static double calculateIndividualPay(Employee employee) {
-        return employee.calculatePay();
+    private static double calculateIndividualPay(Employee emp) {
+        return emp.calculatePay();
     }
 
-    private static void printEmployeeDetails(Employee employee, double individualPay) {
-        String hasVehicle = employee.getVehicle() == null ? "No" : "Yes";
-        System.out.println("Employee Name: " + employee.getName());
-        System.out.println("Has Vehicle: " + hasVehicle);
-        printVehicleInfo(employee.getVehicle());
-        System.out.println("Take Home Pay: " + individualPay);
+    private static void printEmployeeDetails(Employee emp, double pay) {
+        System.out.println("Employee Name: " + emp.getName());
+        System.out.println("Has Vehicle: " + (emp.getVehicle() != null ? "Yes" : "No"));
+        System.out.println("Take Home Pay: " + pay);
     }
 
     private static void printVehicleInfo(Vehicle vehicle) {
@@ -119,7 +130,9 @@ public class PayrollSystem {
         }
     }
 
-    private static void printTotalPayroll(double totalCompanyPay) {
-        System.out.println("------------\nTotal payroll of the company: " + totalCompanyPay + "\n----");
+    private static void printTotalPayroll(double total) {
+        System.out.println("------------");
+        System.out.println("Total payroll of the company: " + total);
+        System.out.println("------------");
     }
 }

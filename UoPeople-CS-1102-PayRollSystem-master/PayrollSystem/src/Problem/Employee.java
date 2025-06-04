@@ -5,7 +5,10 @@
  */
 package Problem;
 	
-	
+//Code Smell 1: Dead Code
+//Reason: Default constructor tidak digunakan sama sekali
+//Solution: Remove Constructor
+
 public abstract class Employee {
     // Variables
     private int empId;

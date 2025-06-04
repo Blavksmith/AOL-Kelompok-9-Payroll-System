@@ -1,8 +1,5 @@
 package Solution;
 
-//Code Smell 2: Dead Code
-//Reason: Default constructor tidak digunakan sama sekali
-//Solution: Remove Constructor
 
 public abstract class Employee {
     private int empId;

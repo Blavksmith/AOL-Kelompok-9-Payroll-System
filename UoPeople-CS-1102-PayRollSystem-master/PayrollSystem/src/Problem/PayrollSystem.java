@@ -3,14 +3,17 @@ package Problem;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-//Code Smell 1: Long Method
-//Reason: Method calcPayroll melakukan banyak tugas -> menghitung gaji, memeriksa kendaraan, dan mencetak detail.
-//Solution: Extract Method
-
-//Code Smell 2: Dead Code
+//Code Smell 1: Dead Code
 //Reason: Variable varCont tidak digunakan
 //Solution: Remove Variable
 
+//Code Smell 2: Long Method
+//Reason: Method calcPayroll melakukan banyak tugas -> menghitung gaji, memeriksa kendaraan, dan mencetak detail.
+//Solution: Extract Method
+
+//Smell Code 4 : Duplicate Code
+//Reason : bagian Method (readNewFullTime) dan (readNewPartTime) input ID dan Name masih duplikat, pattern Scanner usage yang sama, dan struktur method yang mirip.
+//Solution : Extract Method
 
 public class PayrollSystem {
 

@@ -1,11 +1,11 @@
-package Solution:
+package Solution;
 
 public class FullTime extends Employee {
     private double salary;
     private double overtime;
 
-    public FullTime(int id, String name, double salary, double overtime, Vehicle vehicle) {
-        super(id, name, vehicle);
+    public FullTime(EmployeeInfo info, double salary, double overtime) {
+        super(info.getId(), info.getName(), info.getVehicle());
         setSalary(salary);
         setOvertime(overtime);
     }
@@ -31,5 +31,5 @@ public class FullTime extends Employee {
     public void setOvertime(double overtime) {
         if (overtime < 0) throw new IllegalArgumentException("Overtime must be non-negative.");
         this.overtime = overtime;
-    }
+    }
 }
