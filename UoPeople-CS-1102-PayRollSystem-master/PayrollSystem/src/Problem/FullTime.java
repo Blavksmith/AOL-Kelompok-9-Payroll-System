@@ -6,9 +6,11 @@
 package Problem;
 
 /**
- *
- * @author Eugene Vereshchagin (g7skim)
+// Code Smell 3: Deficient Encapsulation
+// Reason: Class FullTime sudah memiliki constructor, tapi memiliki setter
+// Solution: Remove Setter
  */
+
 public class FullTime extends Employee {
     private double salary;
     private double overtime;
